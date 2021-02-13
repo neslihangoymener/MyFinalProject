@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -17,15 +19,16 @@ public CategoryManager(ICategoryDal categoryDal)
             _categoryDal = categoryDal;
         }
 
-        public List<Category> GetAll()
+        public IDataResult< List<Category>> GetAll()
         {
             //iş kodları
-            return _categoryDal.GetAll();
+            
+            return new SuccessDataResult<List<Category>>(_categoryDal.GetAll(), Messages.CategoriesListed);
         }
 
-        public Category GetById(int CategoryId)
+        public IDataResult<List<Category>> GetById(int CategoryId)
         {
-            return _categoryDal.Get(c => c.CategoryId == CategoryId);
+            return new SuccessDataResult<List<Category>>(_categoryDal.GetAll(p => p.CategoryId == CategoryId));
         }
     }
 }
