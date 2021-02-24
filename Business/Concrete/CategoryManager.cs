@@ -22,13 +22,13 @@ public CategoryManager(ICategoryDal categoryDal)
         public IDataResult< List<Category>> GetAll()
         {
             //iş kodları
-            
             return new SuccessDataResult<List<Category>>(_categoryDal.GetAll(), Messages.CategoriesListed);
         }
 
-        public IDataResult<List<Category>> GetById(int CategoryId)
+        //select * form categories where categoryId=3
+        IDataResult<Category> ICategoryService.GetById(int categoryId)
         {
-            return new SuccessDataResult<List<Category>>(_categoryDal.GetAll(p => p.CategoryId == CategoryId));
+            return new SuccessDataResult<Category>(_categoryDal.Get(c => c.CategoryId == categoryId));
         }
     }
 }
