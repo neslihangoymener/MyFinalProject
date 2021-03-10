@@ -21,7 +21,8 @@ namespace Business.Constants
         public static string CategoryLimitExceded = "Kategori sayısı 15 i geçemez, yeni ürün eklenemez";
 
         public static string AuthorizationDenied="Yetkiniz Yok";
-        public static string UserRegistered="Kayıt Oldu";
+
+        public static string UserRegistered="Kullanıcı Başarıyla Kaydedildi";
         public static string UserNotFound ="Kullanıcı Bulunamadı";
         public static string PasswordError="Parola Hatası";
         public static string SuccessfulLogin="Başarılı Giriş";
