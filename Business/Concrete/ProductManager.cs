@@ -34,12 +34,15 @@ namespace Business.Concrete
             _categoryService = categoryService;
 
         }
+
         [SecuredOperation("product.add,admin")]
         [ValidationAspect(typeof(ProductValidator))]
         [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
         {
-           IResult result= BusinessRules.Run(CheckIfProductNameExist(product.ProductName),
+            //Aynı isimde ürün eklenemez
+            //Eğer mevcut kategori sayısı 15'i geçtiyse sisteme yeni ürün eklenemez.
+            IResult result = BusinessRules.Run(CheckIfProductNameExist(product.ProductName),
                 CheckIfProductCountofCategoryCorrect(product.CategoryId),
                 CheckIfCategoryLimitExceded());
             if (result!=null)
@@ -53,22 +56,23 @@ namespace Business.Concrete
             //business codes
  
         }
+
         [CacheAspect] //key,value
         [SecuredOperation("product.list,admin")]
         public IDataResult<List<Product>> GetAll()
         {
             //İş kodları
             //Yetkisi var mı?
-            if (DateTime.Now.Hour == 1)
-            {
-                return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);//Her gün saat 22 de sistemi kapatmak istiyoruz
-            }
+            //if (DateTime.Now.Hour == 1)
+            //{
+            //    return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);//Her gün saat 22 de sistemi kapatmak istiyoruz
+            //}
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductsListed);
         }
-
-        public IDataResult<List<Product>> GetAllByCategoryId(int id)
+        
+        public IDataResult<List<Product>> GetAllByCategoryId(int categoryId)
         {
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == id));
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == categoryId));
         }
 
         [CacheAspect]
@@ -143,5 +147,7 @@ namespace Business.Concrete
             return null;
             
         }
+
+
     }
 }

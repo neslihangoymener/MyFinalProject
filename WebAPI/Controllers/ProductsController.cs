@@ -29,14 +29,14 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getall")]
-        [SecuredOperation("product.list,admin")]
+        //[SecuredOperation("product.list,admin")]
         //Bu operasyonun çalışabilmesi için kullanıcının authontantice olması yeterlidir
 
         public IActionResult GetAll()
         {
 
             //Dependency chain --
-            Thread.Sleep(5000);
+            Thread.Sleep(millisecondsTimeout: 1000);
             var result = _productService.GetAll();
             if (result.Success)
             {
@@ -57,8 +57,32 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("getbycategory")]
+        public IActionResult GetByCategory(int categoryId)
+        {
+            var result = _productService.GetAllByCategoryId(categoryId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("getproductdetails")]
+        public IActionResult GetProductDetails(int categoryId)
+        {
+            var result = _productService.GetProductDetails();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         [HttpPost("add")]
-        [SecuredOperation("product.add,admin")]
+        //[SecuredOperation("product.add,admin")]
         public IActionResult Add(Product product)
         {
             var result = _productService.Add(product);
